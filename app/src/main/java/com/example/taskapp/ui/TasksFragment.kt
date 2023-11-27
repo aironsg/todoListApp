@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskapp.R
 import com.example.taskapp.databinding.FragmentTasksBinding
-import com.example.taskapp.model.Status
-import com.example.taskapp.model.Task
+import com.example.taskapp.data.model.Status
+import com.example.taskapp.data.model.Task
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.StateView
 import com.example.taskapp.util.showBottomSheet

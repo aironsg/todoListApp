@@ -3,7 +3,7 @@ package com.example.taskapp.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.taskapp.model.Task
+import com.example.taskapp.data.model.Task
 import com.example.taskapp.util.StateView
 
 class TaskViewModel : ViewModel() {

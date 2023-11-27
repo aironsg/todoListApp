@@ -36,12 +36,7 @@ class SplashFragment : Fragment() {
     }
 
     private fun checkAuth() {
-//        val currentUser = auth.currentUser
-//        if (currentUser != null) {
-//            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
-//        } else {
-//            findNavController().navigate(R.id.action_splashFragment_to_authentication)
-//        }
+
         findNavController().navigate(R.id.action_splashFragment_to_taksFragment)
     }
 

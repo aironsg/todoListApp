@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.taskapp.R
 import com.example.taskapp.databinding.FragmentFormTaskBinding
-import com.example.taskapp.model.Status
-import com.example.taskapp.model.Task
+import com.example.taskapp.data.model.Status
+import com.example.taskapp.data.model.Task
 import com.example.taskapp.util.initToolbar
 import com.example.taskapp.util.showBottomSheet
 
