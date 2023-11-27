@@ -12,16 +12,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskapp.R
-import com.example.taskapp.databinding.FragmentDoingBinding
+import com.example.taskapp.databinding.FragmentTasksBinding
 import com.example.taskapp.model.Status
 import com.example.taskapp.model.Task
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.StateView
 import com.example.taskapp.util.showBottomSheet
 
-class DoingFragment : Fragment() {
+class TasksFragment : Fragment() {
 
-    private var _binding: FragmentDoingBinding? = null
+    private var _binding: FragmentTasksBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var taskAdapter: TaskAdapter
@@ -33,12 +33,14 @@ class DoingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDoingBinding.inflate(inflater, container, false)
+        _binding = FragmentTasksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initListeners()
 
         initRecyclerView()
 
@@ -47,15 +49,23 @@ class DoingFragment : Fragment() {
         viewModel.getTasks()
     }
 
+    private fun initListeners() {
+        binding.fabAdd.setOnClickListener {
+            val action = TasksFragmentDirections
+                .actionTaksFragmentToFormTaskFragment(null)
+            findNavController().navigate(action)
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.taskList.observe(viewLifecycleOwner) { stateView ->
-            when(stateView){
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
                 is StateView.OnSucess -> {
 
-                    val taskList = stateView.data?.filter { it.status == Status.DOING }
+                    val taskList = stateView.data?.filter { it.status == Status.TODO }
 
                     binding.progressBar.isVisible = false
                     listEmpty(taskList ?: emptyList())
@@ -69,8 +79,39 @@ class DoingFragment : Fragment() {
             }
         }
 
+        viewModel.taskInsert.observe(viewLifecycleOwner) { stateView ->
+            when (stateView) {
+                is StateView.OnLoading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is StateView.OnSucess -> {
+                    binding.progressBar.isVisible = false
+
+                    if (stateView.data?.status == Status.TODO) {
+                        // Armazena a lista atual do adapter
+                        val oldList = taskAdapter.currentList
+
+                        // Gera uma nova lista a partir da lista antiga já com a tarefa atualizada
+                        val newList = oldList.toMutableList().apply {
+                            add(0, stateView.data)
+                        }
+
+                        // Envia a lista atualizada para o adapter
+                        taskAdapter.submitList(newList)
+
+                        setPositionRecyclerView()
+                    }
+
+                }
+                is StateView.OnError -> {
+                    Toast.makeText(requireContext(), stateView.massage, Toast.LENGTH_SHORT).show()
+                    binding.progressBar.isVisible = false
+                }
+            }
+        }
+
         viewModel.taskUpdate.observe(viewLifecycleOwner) { stateView ->
-            when(stateView){
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
@@ -82,13 +123,14 @@ class DoingFragment : Fragment() {
 
                     // Gera uma nova lista a partir da lista antiga já com a tarefa atualizada
                     val newList = oldList.toMutableList().apply {
-                        if(!oldList.contains(stateView.data) && stateView.data?.status == Status.DOING){
+                        if(!oldList.contains(stateView.data) && stateView.data?.status == Status.TODO){
                             add(0, stateView.data)
                             setPositionRecyclerView()
                         }
 
-                        if (stateView.data?.status == Status.DOING) {
-                            find { it.id == stateView.data.id }?.description = stateView.data.description
+                        if (stateView.data?.status == Status.TODO) {
+                            find { it.id == stateView.data.id }?.description =
+                                stateView.data.description
                         } else {
                             remove(stateView.data)
                         }
@@ -102,8 +144,6 @@ class DoingFragment : Fragment() {
 
                     // Atualiza a tarefa pela posição do adapter
                     taskAdapter.notifyItemChanged(position)
-
-                    listEmpty(newList)
                 }
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.massage, Toast.LENGTH_SHORT).show()
@@ -113,7 +153,7 @@ class DoingFragment : Fragment() {
         }
 
         viewModel.taskDelete.observe(viewLifecycleOwner) { stateView ->
-            when(stateView){
+            when (stateView) {
                 is StateView.OnLoading -> {
                     binding.progressBar.isVisible = true
                 }
@@ -130,10 +170,7 @@ class DoingFragment : Fragment() {
                     val newList = oldList.toMutableList().apply {
                         remove(stateView.data)
                     }
-
                     taskAdapter.submitList(newList)
-
-                    listEmpty(newList)
                 }
                 is StateView.OnError -> {
                     Toast.makeText(requireContext(), stateView.massage, Toast.LENGTH_SHORT).show()
@@ -144,7 +181,7 @@ class DoingFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        taskAdapter = TaskAdapter(requireContext()) { task, option ->
+        taskAdapter = TaskAdapter() { task, option ->
             optionSelected(task, option)
         }
 
@@ -157,10 +194,6 @@ class DoingFragment : Fragment() {
 
     private fun optionSelected(task: Task, option: Int) {
         when (option) {
-            TaskAdapter.SELECT_BACK -> {
-                task.status = Status.TODO
-                viewModel.updateTask(task)
-            }
             TaskAdapter.SELECT_REMOVE -> {
                 showBottomSheet(
                     titleDialog = R.string.text_title_dialog_delete,
@@ -172,26 +205,15 @@ class DoingFragment : Fragment() {
                 )
             }
             TaskAdapter.SELECT_EDIT -> {
-                val action = HomeFragmentDirections
-                    .actionHomeFragmentToFormTaskFragment(task)
+                val action = TasksFragmentDirections
+                    .actionTaksFragmentToFormTaskFragment(task)
                 findNavController().navigate(action)
             }
             TaskAdapter.SELECT_DETAILS -> {
                 Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT)
                     .show()
             }
-            TaskAdapter.SELECT_NEXT -> {
-                task.status = Status.DONE
-                viewModel.updateTask(task)
-            }
-        }
-    }
 
-    private fun listEmpty(taskList: List<Task>) {
-        binding.textInfo.text = if (taskList.isEmpty()) {
-            getString(R.string.text_list_task_empty)
-        } else {
-            ""
         }
     }
 
@@ -221,6 +243,14 @@ class DoingFragment : Fragment() {
 
             }
         })
+    }
+
+    private fun listEmpty(taskList: List<Task>) {
+        binding.textInfo.text = if (taskList.isEmpty()) {
+            getString(R.string.text_list_task_empty)
+        } else {
+            ""
+        }
     }
 
     override fun onDestroyView() {
