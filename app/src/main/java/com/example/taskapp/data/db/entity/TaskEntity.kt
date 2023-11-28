@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.taskapp.data.model.Status
+import com.example.taskapp.data.model.Task
 
 @Entity(tableName = "task_table")
 class TaskEntity(
@@ -17,3 +18,11 @@ class TaskEntity(
 
 
 )
+
+fun Task.toTaskEntity(): TaskEntity{
+    return with(this){
+        TaskEntity(id = this.id,
+            description = this.description,
+            status = this.status)
+    }
+}

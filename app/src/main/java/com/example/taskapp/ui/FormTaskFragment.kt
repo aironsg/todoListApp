@@ -122,9 +122,13 @@ class FormTaskFragment : BaseFragment() {
             task.status = status
 
             if (newTask) {
-                viewModel.insertTask(task)
+                viewModel.insertOrUpdateTask(description = description, status = status)
             } else {
-                viewModel.updateTask(task)
+                viewModel.insertOrUpdateTask(
+                    id = task.id,
+                    description = description,
+                    status = status
+                )
             }
 
         } else {
@@ -133,24 +137,21 @@ class FormTaskFragment : BaseFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.taskInsert.observe(viewLifecycleOwner) {
-            Toast.makeText(
-                requireContext(),
-                R.string.text_save_sucess_form_task_fragment,
-                Toast.LENGTH_SHORT
-            ).show()
+        viewModel.taskStateData.observe(viewLifecycleOwner) { statetask ->
+            if (statetask == StateTask.inserted || statetask == StateTask.update) {
+                findNavController().popBackStack()
 
-            findNavController().popBackStack()
+            }
         }
 
-        viewModel.taskUpdate.observe(viewLifecycleOwner) {
+        viewModel.taskStateMessage.observe(viewLifecycleOwner) { message ->
+            binding.progressBar.isVisible = false
             Toast.makeText(
                 requireContext(),
-                R.string.text_update_sucess_form_task_fragment,
+                getString(message),
                 Toast.LENGTH_SHORT
             ).show()
 
-            binding.progressBar.isVisible = false
         }
     }
 
