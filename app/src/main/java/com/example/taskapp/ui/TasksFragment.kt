@@ -7,21 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.taskapp.R
 import com.example.taskapp.data.db.AppDataBase
 import com.example.taskapp.data.db.repository.TaskRepository
 import com.example.taskapp.databinding.FragmentTasksBinding
-import com.example.taskapp.data.model.Status
 import com.example.taskapp.data.model.Task
 import com.example.taskapp.ui.adapter.TaskAdapter
-import com.example.taskapp.util.StateView
 import com.example.taskapp.util.showBottomSheet
 
 class TasksFragment : Fragment() {
@@ -31,7 +27,7 @@ class TasksFragment : Fragment() {
 
     private lateinit var taskAdapter: TaskAdapter
 
-    private val viewModel: TaskListViewModel by viewModels {
+    private val taskListViewModel: TaskListViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(TaskListViewModel::class.java)) {
@@ -46,6 +42,20 @@ class TasksFragment : Fragment() {
         }
     }
 
+    private val taskViewModel: TaskViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
+
+                    val database = AppDataBase.getDatabase(requireContext())
+                    val repository = TaskRepository(database.taskDAO())
+                    @Suppress("UNCHECKED_CAST")
+                    return TaskViewModel(repository) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +67,7 @@ class TasksFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getAlltasks()
+        taskListViewModel.getAllTasks()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,10 +92,16 @@ class TasksFragment : Fragment() {
 
     private fun observeViewModel() {
 
-        viewModel.taskList.observe(viewLifecycleOwner){ taskList ->
-
+        taskListViewModel.taskList.observe(viewLifecycleOwner){ taskList ->
             taskAdapter.submitList(taskList)
             listEmpty(taskList)
+        }
+
+        taskViewModel.taskStateData.observe(viewLifecycleOwner){ stateTask ->
+
+            if(stateTask == StateTask.Delete){
+                taskListViewModel.getAllTasks()
+            }
 
         }
     }
@@ -103,28 +119,28 @@ class TasksFragment : Fragment() {
     }
 
     private fun optionSelected(task: Task, option: Int) {
-//        when (option) {
-//            TaskAdapter.SELECT_REMOVE -> {
-//                showBottomSheet(
-//                    titleDialog = R.string.text_title_dialog_delete,
-//                    message = getString(R.string.text_message_dialog_delete),
-//                    titleButton = R.string.text_button_dialog_confirm,
-//                    onClick = {
-//                        viewModel.deleteTask(task)
-//                    }
-//                )
-//            }
-//            TaskAdapter.SELECT_EDIT -> {
-//                val action = TasksFragmentDirections
-//                    .actionTaksFragmentToFormTaskFragment(task)
-//                findNavController().navigate(action)
-//            }
-//            TaskAdapter.SELECT_DETAILS -> {
-//                Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT)
-//                    .show()
-//            }
-//
-//        }
+        when (option) {
+            TaskAdapter.SELECT_REMOVE -> {
+                showBottomSheet(
+                    titleDialog = R.string.text_title_dialog_delete,
+                    message = getString(R.string.text_message_dialog_delete),
+                    titleButton = R.string.text_button_dialog_confirm,
+                    onClick = {
+                        taskViewModel.deleteTask(task.id)
+                    }
+                )
+            }
+            TaskAdapter.SELECT_EDIT -> {
+                val action = TasksFragmentDirections
+                    .actionTaksFragmentToFormTaskFragment(task)
+                findNavController().navigate(action)
+            }
+            TaskAdapter.SELECT_DETAILS -> {
+                Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
     }
 
 

@@ -36,7 +36,7 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
         try {
             val id = repository.insertTask(task.toTaskEntity())
             if (id > 0L) {
-                _taskStateData.postValue(StateTask.inserted)
+                _taskStateData.postValue(StateTask.Inserted)
                 _taskStateMessage.postValue(R.string.text_save_success_form_task_fragment)
             }
         } catch (e: Exception) {
@@ -46,17 +46,29 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     }
 
 
-    private fun updateTask(task: Task) {}
-//        try {
-//            repository.updateTask(task.toTaskEntity())
-//
-//        } catch (e: Exception) {
-//            _taskStateMessage.postValue(R.string.text_update_error_form_task_fragment)
-//        }
+    private fun updateTask(task: Task) = viewModelScope.launch {
+        try {
+            repository.updateTask(task.toTaskEntity())
+                _taskStateData.postValue(StateTask.Update)
+                _taskStateMessage.postValue(R.string.text_update_success_form_task_fragment)
+
+        } catch (e: Exception) {
+            _taskStateMessage.postValue(R.string.text_update_error_form_task_fragment)
+        }
+
+    }
 
 
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(id :Long) = viewModelScope.launch {
+        try {
+            repository.deleteTask(id)
+            _taskStateData.postValue(StateTask.Delete)
+            _taskStateMessage.postValue(R.string.text_delete_success_form_task_fragment)
+
+        } catch (e: Exception) {
+            _taskStateMessage.postValue(R.string.text_delete_error_form_task_fragment)
+        }
 
     }
 
@@ -64,8 +76,8 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
 
 sealed class StateTask {
-    object inserted : StateTask()
-    object update : StateTask()
-    object delete : StateTask()
+    object Inserted : StateTask()
+    object Update : StateTask()
+    object Delete : StateTask()
     object List : StateTask()
 }

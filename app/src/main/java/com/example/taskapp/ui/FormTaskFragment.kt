@@ -138,7 +138,7 @@ class FormTaskFragment : BaseFragment() {
 
     private fun observeViewModel() {
         viewModel.taskStateData.observe(viewLifecycleOwner) { statetask ->
-            if (statetask == StateTask.inserted || statetask == StateTask.update) {
+            if (statetask == StateTask.Inserted || statetask == StateTask.Update) {
                 findNavController().popBackStack()
 
             }
