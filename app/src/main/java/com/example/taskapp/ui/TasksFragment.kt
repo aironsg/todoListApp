@@ -8,10 +8,15 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskapp.R
+import com.example.taskapp.data.db.AppDataBase
+import com.example.taskapp.data.db.repository.TaskRepository
 import com.example.taskapp.databinding.FragmentTasksBinding
 import com.example.taskapp.data.model.Status
 import com.example.taskapp.data.model.Task
@@ -26,7 +31,20 @@ class TasksFragment : Fragment() {
 
     private lateinit var taskAdapter: TaskAdapter
 
-    private val viewModel: TaskViewModel by activityViewModels()
+    private val viewModel: TaskViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(TaskViewModel::class.java)) {
+
+                    val database = AppDataBase.getDatabase(requireContext())
+                    val repository = TaskRepository(database.taskDAO())
+                    @Suppress("UNCHECKED_CAST")
+                    return TaskViewModel(repository) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

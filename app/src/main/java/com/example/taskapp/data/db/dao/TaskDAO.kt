@@ -14,9 +14,6 @@ interface TaskDAO{
     @Query("SELECT * FROM task_table ORDER BY id DESC")
     suspend fun getAllTasks(): List<Task>
 
-    @Query("SELECT description, status FROM task_table WHERE id = :id")
-    suspend fun getTaskById(id:Long)
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTask(taskEntity:TaskEntity): Long
 

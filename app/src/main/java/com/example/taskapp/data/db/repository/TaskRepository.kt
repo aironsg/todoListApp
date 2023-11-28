@@ -13,10 +13,6 @@ class TaskRepository(private val taskDAO: TaskDAO) {
         return taskDAO.getAllTasks()
     }
 
-    suspend fun getTaskById(id:Long){
-        return taskDAO.getTaskById(id)
-    }
-
     suspend fun insertTask(taskEntity: TaskEntity): Long {
         return taskDAO.insertTask(taskEntity)
     }

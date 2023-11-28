@@ -10,7 +10,9 @@ class TaskEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,
+    @ColumnInfo(name = "description")
     val description:String,
+    @ColumnInfo(name = "status")
     val status: Status
 
 

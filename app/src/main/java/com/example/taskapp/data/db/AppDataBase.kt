@@ -12,6 +12,7 @@ abstract class AppDataBase: RoomDatabase() {
 
     abstract fun taskDAO(): TaskDAO
 
+    companion object {
     @Volatile
     private var INSTANCE: AppDataBase? = null
 
@@ -26,4 +27,9 @@ abstract class AppDataBase: RoomDatabase() {
             return instance
         }
     }
+
+
+    }
+
+
 }
