@@ -26,7 +26,14 @@
     <!--    Login Fragment-->
     <string name="text_title_login_fragment">Login</string>
     <string name="text_button_register_login_fragment">Criar conta</string>
+    <string name="text_button_login_fragment">Entrar</string>
     <string name="text_button_recover_login_fragment">Recuperar conta</string>
+    <string name="text_email_login_fragment">E-mail</string>
+    <string name="text_password_login_fragment">Senha</string>
+    <string name="text_hint_email_login_fragment">Digite seu e-mail</string>
+    <string name="text_hint_password_login_fragment">Digite sua Senha</string>
+    <string name="text_checkbox_login_fragment">Manter Conectado</string>
+    <string name="text_register_login_fragment">Você é novo por aqui? crie sua conta</string>
 
     <!--    Register Fragment-->
     <string name="email_empty_register_fragment">Informe um e-mail válido.</string>
@@ -69,5 +76,8 @@
     <string name="text_delete_success_form_task_fragment">Tarefa removida com sucesso</string>
 
     <string name="text_toolbar_update_form_task_fragment">Editando tarefa...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logo_aplicativo">LOGO APLICATIVO</string>
 
 </resources>
