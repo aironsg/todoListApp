@@ -22,6 +22,7 @@ class TaskRepository(private val taskDAO: TaskDAO) {
     suspend fun updateTask(taskEntity:TaskEntity){
         taskDAO.updateTask(
             id = taskEntity.id,
+            title = taskEntity.title,
             description = taskEntity.description,
             status = taskEntity.status
         )

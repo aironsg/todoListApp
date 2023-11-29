@@ -25,6 +25,8 @@
 
     <!--    Login Fragment-->
     <string name="text_title_login_fragment">Login</string>
+    <string name="text_success_login_fragment">Logado com Sucesso</string>
+    <string name="text_error_login_fragment">Error! credenciais inválidas, tente novamente</string>
     <string name="text_button_register_login_fragment">Criar conta</string>
     <string name="text_button_login_fragment">Entrar</string>
     <string name="text_button_recover_login_fragment">Recuperar conta</string>
@@ -60,10 +62,13 @@
 
     <!--    Form Task Fragment-->
     <string name="text_title_toolbar_form_task_fragment">Nova tarefa</string>
+    <string name="title_empty_form_task_fragment">Informe um titulo.</string>
     <string name="description_empty_form_task_fragment">Informe uma descrição.</string>
     <string name="text_status_form_task_fragment">Status</string>
-    <string name="text_description_form_task_fragment">Descrição</string>
-    <string name="hint_edit_description_form_task_fragment">Criar nova tela de login do app</string>
+    <string name="text_title_task">Titulo</string>
+    <string name="text_description_task">Descrição</string>
+    <string name="hint_edit_title_task">Criar nova tela de login do app</string>
+    <string name="hint_edit_description_task">Inserir layout customizavel com botões chamativos</string>
     <string name="text_button_form_task_fragment">Salvar</string>
 
     <string name="text_save_success_form_task_fragment">Tarefa salva com sucesso</string>
@@ -79,5 +84,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logo_aplicativo">LOGO APLICATIVO</string>
+    <string name="txt_btn_card_remover">Remover</string>
 
 </resources>

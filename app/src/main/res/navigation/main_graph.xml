@@ -14,6 +14,12 @@
             android:id="@+id/action_splashFragment_to_taksFragment"
             app:destination="@id/taksFragment"
             app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_splashFragment_to_authentication"
+            app:destination="@id/authentication"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"/>
     </fragment>
     <fragment
@@ -34,5 +40,28 @@
         <action
             android:id="@+id/action_taksFragment_to_formTaskFragment"
             app:destination="@id/formTaskFragment" />
+        <action
+            android:id="@+id/action_taksFragment_to_authentication"
+            app:destination="@id/authentication" />
     </fragment>
+    <navigation android:id="@+id/authentication"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.example.taskapp.ui.auth.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" >
+            <action
+                android:id="@+id/action_loginFragment_to_registerFragment"
+                app:destination="@id/registerFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="com.example.taskapp.ui.auth.RegisterFragment"
+            android:label="fragment_register"
+            tools:layout="@layout/fragment_register" />
+        <action
+            android:id="@+id/action_global_taksFragment"
+            app:destination="@id/taksFragment" />
+    </navigation>
 </navigation>

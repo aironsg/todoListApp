@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskapp.R
 import com.example.taskapp.data.db.AppDataBase
 import com.example.taskapp.data.db.repository.TaskRepository
-import com.example.taskapp.databinding.FragmentTasksBinding
 import com.example.taskapp.data.model.Task
+import com.example.taskapp.databinding.FragmentTasksBinding
 import com.example.taskapp.ui.adapter.TaskAdapter
 import com.example.taskapp.util.showBottomSheet
 
@@ -135,10 +134,7 @@ class TasksFragment : Fragment() {
                     .actionTaksFragmentToFormTaskFragment(task)
                 findNavController().navigate(action)
             }
-            TaskAdapter.SELECT_DETAILS -> {
-                Toast.makeText(requireContext(), "Detalhes ${task.description}", Toast.LENGTH_SHORT)
-                    .show()
-            }
+
 
         }
     }

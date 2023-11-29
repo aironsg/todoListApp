@@ -58,6 +58,8 @@ dependencies {
     // Room components
     kapt "androidx.room:room-compiler:$room_version"
 
+    //DataStore
+    implementation "androidx.datastore:datastore:1.0.0"
 
 
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
@@ -22,7 +23,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/textDescription"
+                android:id="@+id/textTitleTask"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -30,6 +31,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:text="Criar tela de login do app" />
+
+            <TextView
+                android:id="@+id/textDescriptionTask"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textTitleTask"
                 tools:text="Criar layout da tela de login do app" />
 
             <com.google.android.material.button.MaterialButton
@@ -38,14 +50,14 @@
                 android:layout_height="30dp"
                 android:padding="0dp"
                 android:textSize="11sp"
+                android:layout_marginHorizontal="36dp"
                 android:background="@drawable/bg_btn"
-                android:text="Remover"
+                android:text="@string/txt_btn_card_remover"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/color_delete"
                 app:layout_constraintBottom_toBottomOf="@+id/btnEdit"
                 app:layout_constraintEnd_toStartOf="@+id/btnEdit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnEdit" />
 
@@ -55,34 +67,18 @@
                 android:layout_height="30dp"
                 android:padding="0dp"
                 android:textSize="11sp"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_btn"
                 android:text="Editar"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/color_default"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnDetails"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnDelete"
-                app:layout_constraintTop_toBottomOf="@+id/textDescription" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:padding="0dp"
-                android:textSize="11sp"
-                android:background="@drawable/bg_btn"
-                android:text="Detalhes"
-                android:textAllCaps="false"
-                app:backgroundTint="@color/color_details"
-                app:layout_constraintBottom_toBottomOf="@+id/btnEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnEdit"
-                app:layout_constraintTop_toTopOf="@+id/btnEdit" />
+                app:layout_constraintStart_toEndOf="@+id/btnDelete"
+                app:layout_constraintTop_toBottomOf="@+id/textDescriptionTask" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

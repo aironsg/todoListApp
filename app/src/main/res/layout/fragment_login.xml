@@ -65,7 +65,7 @@
             android:padding="14dp"
             android:textColorHint="@color/white"
             android:hint="@string/text_hint_password_login_fragment"
-            android:inputType="textEmailAddress" />
+            android:inputType="textPassword" />
 
 
             <com.google.android.material.checkbox.MaterialCheckBox
@@ -93,6 +93,14 @@
             android:layout_height="wrap_content"
             style="@style/ButtonLoginTheme"
             android:text="@string/text_button_login_fragment"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="22dp"
+            tools:visibility="visible"/>
 
     </LinearLayout>
 

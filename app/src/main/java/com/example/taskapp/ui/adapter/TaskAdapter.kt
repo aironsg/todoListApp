@@ -17,8 +17,6 @@ class TaskAdapter(
 
         val SELECT_REMOVE: Int = 2
         val SELECT_EDIT: Int = 3
-        val SELECT_DETAILS: Int = 4
-
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Task>() {
             override fun areItemsTheSame(
@@ -34,6 +32,9 @@ class TaskAdapter(
             ): Boolean {
                 return when {
                     oldItem.id != newItem.id -> {
+                        false
+                    }
+                    oldItem.title != newItem.title ->{
                         false
                     }
                     oldItem.status != newItem.status -> {
@@ -62,12 +63,13 @@ class TaskAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val task = getItem(position)
 
-        holder.binding.textDescription.text = task.description
+        holder.binding.textTitleTask.text = task.title
+        holder.binding.textDescriptionTask.text = task.description
 
 
         holder.binding.btnDelete.setOnClickListener { taskSelected(task, SELECT_REMOVE) }
         holder.binding.btnEdit.setOnClickListener { taskSelected(task, SELECT_EDIT) }
-        holder.binding.btnDetails.setOnClickListener { taskSelected(task, SELECT_DETAILS) }
+
     }
 
 

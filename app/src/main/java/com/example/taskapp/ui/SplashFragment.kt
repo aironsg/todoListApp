@@ -29,15 +29,13 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
         Handler(Looper.getMainLooper()).postDelayed(this::checkAuth, 3000)
     }
 
     private fun checkAuth() {
-
-        findNavController().navigate(R.id.action_splashFragment_to_taksFragment)
+        //TODO:modificar esse metodo depois para validação de dados
+        //findNavController().navigate(R.id.action_splashFragment_to_taksFragment)
+        findNavController().navigate(R.id.action_splashFragment_to_authentication)
     }
 
     override fun onDestroyView() {

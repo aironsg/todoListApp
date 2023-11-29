@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        style="@style/GenericTitleTheme"
         android:textColor="@color/color_default"
         android:text="@string/text_title_warning"/>
 

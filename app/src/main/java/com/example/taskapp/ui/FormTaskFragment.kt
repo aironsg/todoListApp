@@ -93,7 +93,8 @@ class FormTaskFragment : BaseFragment() {
         status = task.status
         binding.textToolbar.setText(R.string.text_toolbar_update_form_task_fragment)
 
-        binding.edtDescription.setText(task.description)
+        binding.edtTitleTask.setText(task.title)
+        binding.edtDescriptionTask.setText(task.description)
 
         setStatus()
     }
@@ -109,30 +110,42 @@ class FormTaskFragment : BaseFragment() {
     }
 
     private fun validateData() {
-        val description = binding.edtDescription.text.toString().trim()
+        val titleTask = binding.edtTitleTask.text.toString().trim()
+        val description = binding.edtDescriptionTask.text.toString()
 
-        if (description.isNotEmpty()) {
+        if (titleTask.isNotEmpty()) {
 
-            hideKeyboard()
+            if (description.isNotBlank()) {
+                hideKeyboard()
 
-            binding.progressBar.isVisible = true
+                binding.progressBar.isVisible = true
 
-            if (newTask) task = Task()
-            task.description = description
-            task.status = status
+                if (newTask) task = Task()
+                task.title = titleTask
+                task.description = description
+                task.status = status
 
-            if (newTask) {
-                viewModel.insertOrUpdateTask(description = description, status = status)
+                if (newTask) {
+                    viewModel.insertOrUpdateTask(
+                        title = titleTask,
+                        description = description,
+                        status = status
+                    )
+                } else {
+                    viewModel.insertOrUpdateTask(
+                        id = task.id,
+                        title = titleTask,
+                        description = description,
+                        status = status
+                    )
+                }
             } else {
-                viewModel.insertOrUpdateTask(
-                    id = task.id,
-                    description = description,
-                    status = status
-                )
+                showBottomSheet(message = getString(R.string.description_empty_form_task_fragment))
+
             }
 
         } else {
-            showBottomSheet(message = getString(R.string.description_empty_form_task_fragment))
+            showBottomSheet(message = getString(R.string.title_empty_form_task_fragment))
         }
     }
 

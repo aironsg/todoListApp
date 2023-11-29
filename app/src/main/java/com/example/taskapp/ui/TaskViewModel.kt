@@ -23,11 +23,11 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     }
 
-    fun insertOrUpdateTask(id: Long = 0, description: String = "", status: Status = Status.TODO) {
+    fun insertOrUpdateTask(id: Long = 0,title:String,  description: String = "", status: Status = Status.TODO) {
         if (id == 0L) {
-            insertTask(Task(description = description, status = status))
+            insertTask(Task(title = title,description = description, status = status))
         } else {
-            updateTask(Task(id = id, description = description, status = status))
+            updateTask(Task(id = id,title = title, description = description, status = status))
         }
 
     }
