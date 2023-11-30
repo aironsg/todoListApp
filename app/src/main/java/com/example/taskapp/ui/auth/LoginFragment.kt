@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.taskapp.R
+import com.example.taskapp.data.db.auth.UserManager
 import com.example.taskapp.databinding.FragmentLoginBinding
 import com.example.taskapp.ui.BaseFragment
 import com.example.taskapp.util.showBottomSheet
+import kotlinx.coroutines.launch
 
 class LoginFragment : BaseFragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var userManager: UserManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,7 @@ class LoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.isVisible = false
+        userManager = UserManager(requireContext())
         onListener()
     }
 
@@ -43,11 +49,16 @@ class LoginFragment : BaseFragment() {
 
         binding.btnLogin.setOnClickListener {
             validate()
-
+            clearFields()
         }
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+    }
+
+    private fun clearFields(){
+        binding.edtEmail.setText("")
+        binding.edtPassword.setText("")
     }
 
     private fun checkAuth() {
@@ -72,19 +83,26 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun checkAuth(email: String, password: String) {
-        //TODO: buscar usuario na memoria
-        val userEmail = "teste@gmail.com"
-        val userPassword = "123456"
-        if (userEmail.equals(email) && userPassword.equals(password)) {
-            binding.progressBar.isVisible = false
-            findNavController().navigate(R.id.action_global_taksFragment)
+        lifecycleScope.launch {
+            val user = userManager.getUserData()
+            val userEmail = user.email
+            val userPassword = user.password
+            if (userEmail.equals(email) && userPassword.equals(password)) {
+                binding.progressBar.isVisible = false
+                findNavController().navigate(R.id.action_global_taksFragment)
 
-        } else {
-            binding.progressBar.isVisible = false
-            Toast.makeText(requireContext(), R.string.text_error_login_fragment, Toast.LENGTH_SHORT)
-                .show()
+            } else {
+                binding.progressBar.isVisible = false
+                Toast.makeText(
+                    requireContext(),
+                    R.string.text_error_login_fragment,
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
 
+            }
         }
+
 
     }
 

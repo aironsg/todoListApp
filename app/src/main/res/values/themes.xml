@@ -68,6 +68,13 @@
 
     </style>
 
+    <style name="customTabs">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
     <style name="ButtonNewTaskTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:background">@drawable/bg_btn</item>
         <item name="android:textAllCaps">false</item>

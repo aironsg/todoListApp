@@ -87,6 +87,14 @@ class TasksFragment : Fragment() {
                 .actionTaksFragmentToFormTaskFragment(null)
             findNavController().navigate(action)
         }
+
+        logout()
+    }
+
+    private fun logout() {
+        binding.btnLogout.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun observeViewModel() {
