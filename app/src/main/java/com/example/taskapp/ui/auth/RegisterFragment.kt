@@ -40,14 +40,16 @@ class RegisterFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.progressBar.isVisible = false
         userManager = UserManager(requireContext())
-        onListener()
+        initListener()
     }
 
-    private fun onListener(){
+    private fun initListener(){
         binding.btnCreateAccount.setOnClickListener {
                 binding.progressBar.isVisible = true
             validate()
         }
+
+
     }
 
     private fun validate() {
